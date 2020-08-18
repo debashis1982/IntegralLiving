@@ -12,14 +12,16 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor.systemTeal
         getCategories(){ categoryResponse in
-            var buttonY: CGFloat = 100
+            var buttonY: CGFloat = 250
              for category in categoryResponse{
                if(category.categoryID == category.parentID){
                     DispatchQueue.main.async {
                         let button = UIButton(frame: CGRect(x: 100, y: buttonY, width: 200, height: 50))
                         buttonY = buttonY+100
                         button.backgroundColor = .blue
+                        button.layer.cornerRadius = 5
                         button.setTitle(category.name, for: .normal)
                         button.tag = category.categoryID
                         button.addTarget(self, action: #selector(self.openTopicView(button:)), for: .touchUpInside)
@@ -45,7 +47,6 @@ class ViewController: UIViewController {
                 } catch { print(error) }
             }else{
                 print("error")
-                print(error)
             }
         }
         task.resume()

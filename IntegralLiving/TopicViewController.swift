@@ -14,7 +14,7 @@ class TopicViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.red
+        view.backgroundColor = UIColor.systemTeal
         // Do any additional setup after loading the view.
         print(catgeoryId)
         getCategories(categoryId: catgeoryId){ categoryResponse in
@@ -24,6 +24,7 @@ class TopicViewController: UIViewController {
                         let button = UIButton(frame: CGRect(x: 100, y: buttonY, width: 200, height: 50))
                         buttonY = buttonY+100
                         button.backgroundColor = .blue
+                        button.layer.cornerRadius = 5
                         button.setTitle(category.name, for: .normal)
                         button.tag = category.categoryID
                         button.addTarget(self, action: #selector(self.openStoryView(button:)), for: .touchUpInside)
@@ -45,15 +46,12 @@ class TopicViewController: UIViewController {
         components.host = "integral-80c7.restdb.io"
         components.path = "/rest/category"
         components.queryItems = [URLQueryItem(name: "q", value: query)]
-        
-        print(components.url)
         var request = URLRequest(url:components.url!)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("", forHTTPHeaderField: "x-apikey")
         let task = URLSession.shared.dataTask(with: request){
             (data, response, error) in
-            print(data)
             if error == nil{
                 do {
                    let decoder = JSONDecoder()
@@ -62,7 +60,6 @@ class TopicViewController: UIViewController {
                 } catch { print(error) }
             }else{
                 print("error")
-                print(error)
             }
         }
         task.resume()

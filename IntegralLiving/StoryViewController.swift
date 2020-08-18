@@ -15,7 +15,7 @@ class StoryViewController: UIViewController {
         
         override func viewDidLoad() {
             super.viewDidLoad()
-            view.backgroundColor = UIColor.white
+            view.backgroundColor = UIColor.systemTeal
             // Do any additional setup after loading the view.
             print(catgeoryId)
             getContent(categoryId: catgeoryId){ contentResponse in
@@ -28,11 +28,14 @@ class StoryViewController: UIViewController {
                             button.tag = content.contentResponseID
                             self.view.addSubview(button)
                             */
-                            let uiTextView = UITextView(frame: CGRect(x: 10, y: 10, width: self.view.frame.width, height: self.view.frame.height))
+                            let uiTextView = UITextView(frame: CGRect(x: 5, y: 5, width: self.view.frame.width, height: self.view.frame.height))
                             uiTextView.isScrollEnabled = true
                             uiTextView.isUserInteractionEnabled = true
-                            
+                            uiTextView.isEditable = false
                             uiTextView.text = content.content
+                            uiTextView.font = UIFont.systemFont(ofSize: 17.0)
+                            uiTextView.textContainer.lineFragmentPadding = 0
+                            uiTextView.textContainerInset = .zero
                             self.view.addSubview(uiTextView)
                         }
                }
@@ -47,7 +50,6 @@ class StoryViewController: UIViewController {
             components.host = "integral-80c7.restdb.io"
             components.path = "/rest/content"
             components.queryItems = [URLQueryItem(name: "q", value: query)]
-            print(components.url)
             
             var request = URLRequest(url:components.url!)
             request.httpMethod = "GET"
@@ -56,7 +58,6 @@ class StoryViewController: UIViewController {
             
             let task = URLSession.shared.dataTask(with: request){
                 (data, response, error) in
-                print(data)
                 if error == nil{
                     do {
                        let decoder = JSONDecoder()
@@ -65,7 +66,6 @@ class StoryViewController: UIViewController {
                     } catch { print(error) }
                 }else{
                     print("error")
-                    print(error)
                 }
             }
             task.resume()
